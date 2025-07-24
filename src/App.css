@@ -1,0 +1,582 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.app {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+/* Navigation Bar */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  padding: 1rem 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.nav-container {
+  width: 100%;
+  padding: 0 0.5rem; /* Further reduced padding */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative; /* Add relative positioning for absolute centering */
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  margin-left: -0.25rem; /* Push even more to the left edge */
+  flex: 0 0 auto; /* Don't grow or shrink */
+}
+
+.logo-image {
+  height: 60px; /* Increased from 40px to 60px */
+  width: auto;
+  object-fit: contain;
+}
+
+.logo-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+  letter-spacing: 0.5px;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 3rem; /* Increased from 2rem to 3rem */
+  margin: 0;
+  padding: 0;
+  position: absolute; /* Position absolutely to center */
+  left: 50%; /* Move to center */
+  transform: translateX(-50%); /* Center perfectly */
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #666;
+  font-weight: 500;
+  font-size: 0.95rem;
+  padding: 0.5rem 0;
+  transition: color 0.3s ease;
+  position: relative;
+}
+
+.nav-link:hover,
+.nav-link.active {
+  color: #333;
+}
+
+/* Removed green underline for active nav link
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #4CAF50;
+  border-radius: 1px;
+}
+*/
+
+.book-consulting-btn {
+  background: #8B4513; /* Changed to brown color */
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem; /* Increased horizontal padding */
+  border-radius: 25px; /* Made it more rounded/pill-shaped */
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex: 0 0 auto; /* Don't grow or shrink, stay on the right */
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.book-consulting-btn:hover {
+  background: #A0522D; /* Lighter brown on hover */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Responsive Navigation */
+@media (max-width: 768px) {
+  .nav-menu {
+    display: none;
+  }
+  
+  .book-consulting-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+/* Background Images */
+.background-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -2;
+}
+
+.background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transform: scale(0.1);
+  transform-origin: 80% 50%;
+  z-index: 1; /* Base z-index for background images */
+}
+
+/* Active image overlaps previous ones */
+.background-image.active {
+  opacity: 1;
+  transform: scale(1);
+  animation: expandFromCard 1.2s cubic-bezier(0.4, 0.0, 0.2, 1) forwards;
+  z-index: 2; /* Higher z-index to overlay previous images */
+}
+
+/* Previous images stay visible until new one fully covers them */
+.background-image:not(.active) {
+  opacity: 1; /* Keep previous images visible */
+  transform: scale(1);
+  z-index: 1; /* Lower z-index, stays behind new image */
+  /* No transition - let the new image cover it */
+}
+
+/* Faster, smoother expansion animation from card center */
+@keyframes expandFromCard {
+  0% {
+    opacity: 0;
+    transform: scale(0.1);
+  }
+  20% {
+    opacity: 1;
+    transform: scale(0.3);
+  }
+  60% {
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.1) 100%);
+  z-index: -1;
+}
+
+/* Main Content */
+.main-content {
+  display: flex;
+  min-height: 100vh;
+  padding: 6rem 2rem 2rem 2rem; /* Added top padding for navbar */
+  gap: 2rem;
+  align-items: center;
+}
+
+.content-left {
+  flex: 1;
+  max-width: 600px;
+}
+
+.content-right {
+  flex: 1;
+  max-width: 500px;
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+}
+
+/* Hero Text */
+.hero-text {
+  margin-bottom: 3rem;
+}
+
+.hero-text h1 {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  color: white;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.subtitle {
+  font-size: 1.25rem;
+  color: rgba(255,255,255,0.9);
+  font-weight: 300;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Contact Form */
+.contact-form {
+  background: transparent;
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.form-input {
+  flex: 1;
+  padding: 0.875rem 1rem;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+  background: rgba(255, 255, 255, 0.15); /* Individual whiteish translucent background */
+  backdrop-filter: blur(5px); /* Light blur effect */
+  color: white;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: rgba(255,255,255,0.6);
+  background: rgba(255, 255, 255, 0.2); /* Slightly more opaque on focus */
+}
+
+.form-input::placeholder {
+  color: rgba(255,255,255,0.7);
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.recaptcha {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.875rem;
+  color: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.3); /* Made more white - increased from 0.1 to 0.3 */
+  padding: 0.75rem 1rem;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(5px);
+  max-width: fit-content;
+}
+
+.recaptcha input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #4285f4;
+  cursor: pointer;
+}
+
+.recaptcha label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.contact-btn {
+  background: linear-gradient(135deg, #8B4513, #654321); /* Changed to brown gradient */
+  color: white;
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  white-space: nowrap; /* Keep "Contact Us" on one line */
+}
+
+.contact-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.4); /* Changed shadow to brown */
+}
+
+/* Image Stack */
+.image-stack {
+  position: fixed;
+  right: -100px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 440px;
+  height: 150px;
+  z-index: 10;
+}
+
+.stack-image {
+  position: absolute;
+  width: 200px;
+  height: 200px; /* Increased from 150px to 200px */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.320, 1);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+  border: 3px solid rgba(255,255,255,0.9);
+}
+
+.stack-image:hover {
+  transform: scale(1.05) !important;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+  border-color: #2563eb;
+  z-index: 100 !important;
+}
+
+.stack-image.active {
+  transform: scale(1.08) !important;
+  box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);
+  border-color: #2563eb;
+  z-index: 100 !important;
+  animation: cardPulse 1.5s ease-in-out;
+}
+
+@keyframes cardPulse {
+  0% {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    border-color: rgba(255,255,255,0.9);
+  }
+  50% {
+    box-shadow: 0 20px 60px rgba(37, 99, 235, 0.6);
+    border-color: #60a5fa;
+  }
+  100% {
+    box-shadow: 0 15px 40px rgba(37, 99, 235, 0.4);
+    border-color: #2563eb;
+  }
+}
+
+.stack-image-1 {
+  top: 0px;
+  left: 0px;
+}
+
+.stack-image-2 {
+  top: 0px;
+  left: 220px;
+}
+
+/* Navigation Arrows */
+.nav-arrow {
+  position: absolute;
+  bottom: 3rem; /* Changed from top: 50% to bottom positioning */
+  background: rgba(255,255,255,0.4); /* Made more translucent - reduced from 0.9 to 0.4 */
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.nav-arrow:hover {
+  background: rgba(255,255,255,0.7); /* Made hover state more translucent too */
+  /* No transform - keep arrows completely stable */
+}
+
+.nav-arrow-left {
+  left: 50%;
+  transform: translateX(-60px); /* Position left arrow to the left of center */
+}
+
+.nav-arrow-left:hover {
+  transform: translateX(-60px); /* Keep exact same position on hover */
+}
+
+.nav-arrow-right {
+  right: 50%;
+  transform: translateX(60px); /* Position right arrow to the right of center */
+}
+
+.nav-arrow-right:hover {
+  transform: translateX(60px); /* Keep exact same position on hover */
+}
+
+/* Video Play Button */
+.video-play-btn {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  z-index: 5;
+}
+
+.video-play-btn:hover {
+  transform: translate(-50%, -50%) scale(1.1);
+}
+
+/* Wave Animation Container */
+.wave-container {
+  position: absolute;
+  top: -40px; /* Position waves above the play button */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 120px;
+  height: 120px;
+  pointer-events: none; /* Don't interfere with button clicks */
+}
+
+/* Wave Elements */
+.wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgba(255, 255, 255, 0.6);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: waveExpand 2s ease-out infinite;
+}
+
+.wave-2 {
+  animation-delay: 0.4s;
+}
+
+.wave-3 {
+  animation-delay: 0.8s;
+}
+
+/* Wave Expansion Animation */
+@keyframes waveExpand {
+  0% {
+    width: 30px;
+    height: 30px;
+    opacity: 0.8;
+    border-width: 2px;
+  }
+  50% {
+    width: 80px;
+    height: 80px;
+    opacity: 0.4;
+    border-width: 1px;
+  }
+  100% {
+    width: 120px;
+    height: 120px;
+    opacity: 0;
+    border-width: 0.5px;
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .main-content {
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .content-right {
+    justify-content: center;
+  }
+  
+  .image-stack {
+    width: 260px;
+    height: 120px;
+  }
+  
+  .stack-image {
+    width: 120px;
+    height: 90px;
+  }
+  
+  .stack-image-2 {
+    left: 140px !important;
+  }
+  
+  .form-row {
+    flex-direction: column;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .nav-arrow-left {
+    left: 1rem;
+  }
+  
+  .nav-arrow-right {
+    right: 1rem;
+  }
+  
+  .hero-text h1 {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.5rem;
+  }
+  
+  .contact-form {
+    padding: 1.5rem;
+  }
+  
+  .image-stack {
+    width: 220px;
+    height: 100px;
+  }
+  
+  .stack-image {
+    width: 100px;
+    height: 75px;
+  }
+  
+  .stack-image-2 {
+    left: 120px !important;
+  }
+}
