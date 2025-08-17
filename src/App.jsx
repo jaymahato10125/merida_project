@@ -2,18 +2,18 @@ import { useState, useEffect } from 'react'
 import './App.css'
 
 const backgroundImages = [
-  '/image/home1.webp',
-  '/image/home2.webp',
-  '/image/home3.webp',
-  '/image/home4.webp',
-  '/image/home5.webp'
+  './image/home1.webp',
+  './image/home2.webp',
+  './image/home3.webp',
+  './image/home4.webp',
+  './image/home5.webp'
 ]
 
 function App() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [cardImages, setCardImages] = useState([
-    { id: 1, image: '/image/home1.webp', imageIndex: 0 },
-    { id: 2, image: '/image/home2.webp', imageIndex: 1 }
+    { id: 1, image: './image/home1.webp', imageIndex: 0 },
+    { id: 2, image: './image/home2.webp', imageIndex: 1 }
   ])
 
   useEffect(() => {
