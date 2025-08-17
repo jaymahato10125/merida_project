@@ -1,19 +1,21 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 
+import navLogo from '../logo/navLogo.webp'
+
 const backgroundImages = [
-  './image/home1.webp',
-  './image/home2.webp',
-  './image/home3.webp',
-  './image/home4.webp',
-  './image/home5.webp'
+  '/home1.webp',
+  '/home2.webp',
+  '/home3.webp',
+  '/home4.webp',
+  '/home5.webp'
 ]
 
 function App() {
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [cardImages, setCardImages] = useState([
-    { id: 1, image: './image/home1.webp', imageIndex: 0 },
-    { id: 2, image: './image/home2.webp', imageIndex: 1 }
+    { id: 1, image: '/home1.webp', imageIndex: 0 },
+    { id: 2, image: '/home2.webp', imageIndex: 1 }
   ])
 
   useEffect(() => {
@@ -54,7 +56,7 @@ function App() {
       <nav className="navbar">
         <div className="nav-container">
           <div className="nav-logo">
-            <img src="/logo/navLogo.webp" alt="Agasa Logo" className="logo-image" />
+            <img src={navLogo} alt="Agasa Logo" className="logo-image" />
           </div>
           
           <ul className="nav-menu">
