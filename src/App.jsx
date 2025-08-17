@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import './App.css'
 
  
@@ -17,8 +17,31 @@ function App() {
     { id: 2, image: './image/home2.webp', imageIndex: 1 }
   ])
 
+  // Ref to the top card (stack-image-1) to compute transform-origin
+  const topCardRef = useRef(null)
+  const transformOriginRef = useRef('80% 50%')
+
+  const computeTransformOriginFromTopCard = () => {
+    try {
+      if (topCardRef.current) {
+        const rect = topCardRef.current.getBoundingClientRect()
+        const cx = rect.left + rect.width / 2
+        const cy = rect.top + rect.height / 2
+        const xPercent = (cx / window.innerWidth) * 100
+        const yPercent = (cy / window.innerHeight) * 100
+        transformOriginRef.current = `${xPercent}% ${yPercent}%`
+      } else {
+        transformOriginRef.current = '80% 50%'
+      }
+    } catch (e) {
+      transformOriginRef.current = '80% 50%'
+    }
+  }
+
   useEffect(() => {
     const interval = setInterval(() => {
+      // Compute transform-origin from the top card before switching
+      computeTransformOriginFromTopCard()
       setCurrentImageIndex((prev) => {
         const nextIndex = (prev + 1) % backgroundImages.length
         
@@ -41,6 +64,14 @@ function App() {
     }, 4000)
 
     return () => clearInterval(interval)
+  }, [])
+
+  // Recompute on mount and when window resizes
+  useEffect(() => {
+    computeTransformOriginFromTopCard()
+    const onResize = () => computeTransformOriginFromTopCard()
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
   }, [])
 
   const handleFormSubmit = (e) => {
@@ -94,7 +125,7 @@ function App() {
           <div
             key={index}
             className={`background-image ${index === currentImageIndex ? 'active' : ''}`}
-            style={{ backgroundImage: `url(${image})` }}
+            style={{ backgroundImage: `url(${image})`, transformOrigin: transformOriginRef.current }}
           />
         ))}
         <div className="background-overlay" />
@@ -138,23 +169,25 @@ function App() {
         <div className="content-right">
           <div className="image-stack">
             {cardImages.map((card, index) => (
-              <div
-                key={card.id}
-                className={`stack-image stack-image-${index + 1} ${index === currentImageIndex ? 'active' : ''}`}
-                style={{ 
-                  backgroundImage: `url(${card.image})`,
-                  zIndex: cardImages.length - index
-                }}
-              />
-            ))}
-          </div>
+            <div
+              key={card.id}
+              ref={index === 0 ? topCardRef : null}
+              className={`stack-image stack-image-${index + 1} ${index === currentImageIndex ? 'active' : ''}`}
+              style={{ 
+                backgroundImage: `url(${card.image})`,
+                zIndex: cardImages.length - index
+              }}
+            />
+          ))}
         </div>
+      </div>
       </div>
 
       {/* Navigation Arrows */}
       <button 
         className="nav-arrow nav-arrow-left"
         onClick={() => {
+          computeTransformOriginFromTopCard()
           setCurrentImageIndex((prev) => {
             const nextIndex = (prev - 1 + backgroundImages.length) % backgroundImages.length
             setCardImages([
@@ -178,6 +211,7 @@ function App() {
       <button 
         className="nav-arrow nav-arrow-right"
         onClick={() => {
+          computeTransformOriginFromTopCard()
           setCurrentImageIndex((prev) => {
             const nextIndex = (prev + 1) % backgroundImages.length
             setCardImages([
